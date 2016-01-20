@@ -1,7 +1,7 @@
 
 <#
 .DESCRIPTION
-Installs Posh-SSH as this is a depandancy.
+Installs Posh-SSH as this is a dependency.
 
 .EXAMPLE
 Install-Dependencies
@@ -25,8 +25,8 @@ function Install-Dependencies
 
 <#
 .DESCRIPTION
-Creates a new session to the loadbalancer, meaning multible sessions could be created
-each connected to seperate loadbalancers.
+Creates a new session to the load balancer, meaning multiple sessions could be created
+each connected to separate load balancers.
 
 .PARAMETER server
 Specifies the server to connect to.
@@ -63,7 +63,7 @@ function New-LoadBalancerSession
 Sets the selected node to halted.
 
 .PARAMETER session
-Specifies the loadbalancer session used when running the command.
+Specifies the load balancer session used when running the command.
 
 .PARAMETER vip
 Specifies the vIP name that will be selected when halting the node.
@@ -95,13 +95,13 @@ function Halt-Server
 Sets the selected node to drained.
 
 .PARAMETER session
-Specifies the loadbalancer session used when running the command.
+Specifies the load balancer session used when running the command.
 
 .PARAMETER vip
-Specifies the vIP name that will be selected when draning the node.
+Specifies the vIP name that will be selected when draining the node.
 
 .PARAMETER rip
-Specifies the rIP name that will be selected when draning the node.
+Specifies the rIP name that will be selected when draining the node.
 
 .EXAMPLE
 Drain-Server -Session $session -vip "External Website" -rip "Node 1"
@@ -127,13 +127,13 @@ function Drain-Server
 Sets the selected node to online.
 
 .PARAMETER session
-Specifies the loadbalancer session used when running the command.
+Specifies the load balancer session used when running the command.
 
 .PARAMETER vip
-Specifies the vIP name that will be selected when onlining the node.
+Specifies the vIP name that the rip belongs too.
 
 .PARAMETER rip
-Specifies the rIP name that will be selected when onlining the node.
+Specifies the rIP name that will be brought online.
 
 .EXAMPLE
 Online-Server -Session $session -vip "External Website" -rip "Node 1"
