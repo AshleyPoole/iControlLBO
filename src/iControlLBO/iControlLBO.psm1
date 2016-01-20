@@ -52,7 +52,7 @@ function New-LoadBalancerSession
 		[string]$password
 	)
 
-	$securePassword = Convert-ToSecureString $password -AsPlainText -Force
+	$securePassword = ConvertTo-SecureString $password -AsPlainText -Force
 	$serverCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $username,$securePassword
 
 	return New-SSHSession -ComputerName $server -Credential $serverCredential -AcceptKey
