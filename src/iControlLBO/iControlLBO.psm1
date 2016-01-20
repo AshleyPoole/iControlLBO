@@ -52,7 +52,8 @@ function New-LoadBalancerSession
 		[string]$password
 	)
 
-	$serverCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $username,$password
+	$securePassword = Convert-ToSecureString $password -AsPlainText -Force
+	$serverCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $username,$securePassword
 
 	return New-SSHSession -ComputerName $server -Credential $serverCredential -AcceptKey
 }
@@ -113,7 +114,7 @@ function Drain-Server
 
 		[Parameter(Mandatory=$true)]
 		[string]$vip,
-		
+
 		[Parameter(Mandatory=$true)]
 		[string]$rip
 	)
@@ -145,7 +146,7 @@ function Online-Server
 
 		[Parameter(Mandatory=$true)]
 		[string]$vip,
-		
+
 		[Parameter(Mandatory=$true)]
 		[string]$rip
 	)
@@ -153,5 +154,4 @@ function Online-Server
 	return Invoke-SSHCommand -SSHSession $session -Command $("lbcli --action online --vip " + $vip + " --rip " + $rip)
 }
 
-
-
+Export-ModuleMember -function *
