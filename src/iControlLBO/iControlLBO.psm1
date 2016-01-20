@@ -10,7 +10,7 @@ function Install-Dependencies
 {
 	if (!(Get-Module -ListAvailable -Name Posh-SSH))
 	{
-		if ($PSVersionTable.PSVersion -ge 5)
+		if ($PSVersionTable.PSVersion.Major -ge 5)
 		{
 				Install-Module -Name Posh-SSH
 		}
