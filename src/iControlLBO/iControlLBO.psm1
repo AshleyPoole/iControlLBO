@@ -12,7 +12,7 @@ function Install-Dependencies
 	{
 		if ($PSVersionTable.PSVersion.Major -ge 5)
 		{
-				Install-Module -Name Posh-SSH
+			Install-Module -Name Posh-SSH
 		}
 		else
 		{
@@ -55,7 +55,9 @@ function New-LBConnection
 	if ($password -eq $null)
 	{
 		$serverCredential = Get-Credential -Username $username
-	} else {
+	}
+	else
+	{
 		$securePassword = ConvertTo-SecureString $password -AsPlainText -Force
 		$serverCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $username,$securePassword
 	}
