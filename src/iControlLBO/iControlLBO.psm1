@@ -20,7 +20,7 @@ function Install-Dependencies
 		}
 	}
 
-	Import-Module -Name Posh-SSH
+	Import-Module -Name Posh-SSH -ErrorAction Stop
 }
 
 <#
@@ -28,8 +28,8 @@ function Install-Dependencies
 Creates a new session to the load balancer, meaning multiple sessions could be created
 each connected to separate load balancers.
 
-.PARAMETER server
-Specifies the server to connect to.
+.PARAMETER appliance
+Specifies the appliance (server) address to connect to.
 
 .PARAMETER username
 Specifies the username to connect with when connecting to the server.
@@ -38,13 +38,13 @@ Specifies the username to connect with when connecting to the server.
 Specifies the password to connect with when connecting to the server.
 
 .EXAMPLE
-New-LoadBalancerSession -Server "192.168.1.100" -Username "root" -Password "loadbalancer"
+New-LBConnection -Appliance "192.168.1.100" -Username "root" -Password "loadbalancer"
 #>
-function New-LoadBalancerSession
+function New-LBConnection
 {
 	param (
 		[Parameter(Mandatory=$true)]
-		[string]$server,
+		[string]$appliance,
 
 		[Parameter(Mandatory=$true)]
 		[string]$username,
@@ -55,30 +55,30 @@ function New-LoadBalancerSession
 	$securePassword = ConvertTo-SecureString $password -AsPlainText -Force
 	$serverCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $username,$securePassword
 
-	return New-SSHSession -ComputerName $server -Credential $serverCredential -AcceptKey
+	return New-SSHSession -ComputerName $appliance -Credential $serverCredential -AcceptKey
 }
 
 <#
 .DESCRIPTION
 Sets the selected node to halted.
 
-.PARAMETER session
-Specifies the load balancer session used when running the command.
+.PARAMETER connection
+Specifies the load balancer connection to be used when running the command.
 
 .PARAMETER vip
-Specifies the vIP name that will be selected when halting the node.
+Specifies the VIP name that the RIP belongs too.
 
 .PARAMETER rip
-Specifies the rIP name that will be selected when halting the node.
+Specifies the RIP name.
 
 .EXAMPLE
-Halt-Server -Session $session -vip "External Website" -rip "Node 1"
+Invoke-LBRipHalt -Connection $connection -Vip "PROD-EXTERNAL-WEBSITES" -Rip "PROD-RIP-1"
 #>
-function Halt-Server
+function Invoke-LBRipHalt
 {
 	param (
 		[Parameter(Mandatory=$true)]
-		[object]$session,
+		[object]$connection,
 
 		[Parameter(Mandatory=$true)]
 		[string]$vip,
@@ -87,30 +87,30 @@ function Halt-Server
 		[string]$rip
 	)
 
-	return Invoke-SSHCommand -SSHSession $session -Command $("lbcli --action halt --vip " + $vip + " --rip " + $rip)
+	return Invoke-SSHCommand -SSHSession $connection -Command $("lbcli --action halt --vip " + $vip + " --rip " + $rip)
 }
 
 <#
 .DESCRIPTION
 Sets the selected node to drained.
 
-.PARAMETER session
-Specifies the load balancer session used when running the command.
+.PARAMETER connection
+Specifies the load balancer connection to be used when running the command.
 
 .PARAMETER vip
-Specifies the vIP name that will be selected when draining the node.
+Specifies the VIP name that the RIP belongs too.
 
 .PARAMETER rip
-Specifies the rIP name that will be selected when draining the node.
+Specifies the RIP name.
 
 .EXAMPLE
-Drain-Server -Session $session -vip "External Website" -rip "Node 1"
+Invoke-LBRipDrain -Connection $connection -Vip "PROD-EXTERNAL-WEBSITES" -Rip "PROD-RIP-1"
 #>
-function Drain-Server
+function Invoke-LBRipDrain
 {
 	param (
 		[Parameter(Mandatory=$true)]
-		[object]$session,
+		[object]$connection,
 
 		[Parameter(Mandatory=$true)]
 		[string]$vip,
@@ -119,30 +119,30 @@ function Drain-Server
 		[string]$rip
 	)
 
-	return Invoke-SSHCommand -SSHSession $session -Command $("lbcli --action drain --vip " + $vip + " --rip " + $rip)
+	return Invoke-SSHCommand -SSHSession $connection -Command $("lbcli --action drain --vip " + $vip + " --rip " + $rip)
 }
 
 <#
 .DESCRIPTION
 Sets the selected node to online.
 
-.PARAMETER session
-Specifies the load balancer session used when running the command.
+.PARAMETER connection
+Specifies the load balancer connection to be used when running the command.
 
 .PARAMETER vip
-Specifies the vIP name that the rip belongs too.
+Specifies the VIP name that the RIP belongs too.
 
 .PARAMETER rip
-Specifies the rIP name that will be brought online.
+Specifies the RIP name.
 
 .EXAMPLE
-Online-Server -Session $session -vip "External Website" -rip "Node 1"
+Invoke-LBRipOnline -Connection $connection -Vip "PROD-EXTERNAL-WEBSITES" -Rip "PROD-RIP-1"
 #>
-function Online-Server
+function Invoke-LBRipOnline
 {
 	param (
 		[Parameter(Mandatory=$true)]
-		[object]$session,
+		[object]$connection,
 
 		[Parameter(Mandatory=$true)]
 		[string]$vip,
@@ -151,7 +151,7 @@ function Online-Server
 		[string]$rip
 	)
 
-	return Invoke-SSHCommand -SSHSession $session -Command $("lbcli --action online --vip " + $vip + " --rip " + $rip)
+	return Invoke-SSHCommand -SSHSession $connection -Command $("lbcli --action online --vip " + $vip + " --rip " + $rip)
 }
 
 Export-ModuleMember -function *
