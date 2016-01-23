@@ -52,8 +52,13 @@ function New-LBConnection
 		[string]$password
 	)
 
-	$securePassword = ConvertTo-SecureString $password -AsPlainText -Force
-	$serverCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $username,$securePassword
+	if ($password -eq $null)
+	{
+		$serverCredential = Get-Credential -Username $username
+	} else {
+		$securePassword = ConvertTo-SecureString $password -AsPlainText -Force
+		$serverCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $username,$securePassword
+	}
 
 	return New-SSHSession -ComputerName $appliance -Credential $serverCredential -AcceptKey
 }
