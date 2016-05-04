@@ -65,9 +65,18 @@ function New-LBConnection
 		[string]$key
 	)
 
-	if ($password -eq $null)
+	if ([string]::IsNullOrEmpty($password))
 	{
-		$serverCredential = Get-Credential -Username $username
+		if ($key -eq $null)
+		{
+			$message = "Enter ${username}'s ssh password"
+		}
+		else
+		{
+			$message = "Enter ${username}'s private key password"
+		}
+
+		$serverCredential = Get-Credential -Username $username -message $message
 	}
 	else
 	{
