@@ -96,3 +96,17 @@ Host       : hostname
 Output     : {, , CLI: halt web1 web1 completed}
 ExitStatus : 0
 ```
+
+### Other
+
+#### Custom Commands
+```powershell
+Invoke-LBCustomCommand -connection $ssh_con -command "df -h | grep /dev/sda1"
+```
+
+```
+Host       : hostname
+Output     : {/dev/sda1       2.6G  1.1G  1.3G  46% /}
+ExitStatus : 0
+```
+
