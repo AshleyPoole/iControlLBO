@@ -76,7 +76,7 @@ function New-LBConnection
 			$message = "Enter ${username}'s private key password"
 		}
 
-		$serverCredential = Get-Credential -Username $username -message $message
+		$serverCredential = Get-Credential -Username $username -Message $message
 	}
 	else
 	{
@@ -90,7 +90,7 @@ function New-LBConnection
 	}
 	else
 	{
-		return New-SSHSession -ComputerName $appliance -Credential $serverCredential -AcceptKey -key $key
+		return New-SSHSession -ComputerName $appliance -Credential $serverCredential -AcceptKey -Key $key
 	}
 }
 
@@ -188,6 +188,32 @@ function Invoke-LBRipOnline
 	)
 
 	return Invoke-SSHCommand -SSHSession $connection -Command $("lbcli --action online --vip " + $vip + " --rip " + $rip)
+}
+
+<#
+.DESCRIPTION
+Allows for a custom command to be executed on the load balancer.
+
+.PARAMETER connection
+Specifies the load balancer connection to be used when running the command.
+
+.PARAMETER command
+Specifies the command to execute.
+
+.EXAMPLE
+Invoke-LBCustomCommand -Connection $connection -Command "df -h | grep /dev/sda1"
+#>
+function Invoke-LBCustomCommand
+{
+	param (
+		[Parameter(Mandatory=$true)]
+		[object]$connection,
+
+		[Parameter(Mandatory=$true)]
+		[string]$command
+	)
+
+	return Invoke-SSHCommand -SSHSession $connection -Command $command
 }
 
 Export-ModuleMember -function *
