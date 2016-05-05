@@ -36,9 +36,20 @@ Specifies the username to connect with when connecting to the server.
 
 .PARAMETER password
 Specifies the password to connect with when connecting to the server.
+Specifies the password for the private key, if a private key is used.
+
+.PARAMETER key
+Specifies the private key to connect with when connecting to the server.
 
 .EXAMPLE
+Connect to the load balancer with a username and password.
+
 New-LBConnection -Appliance "192.168.1.100" -Username "root" -Password "loadbalancer"
+
+.EXAMPLE
+Connect to the load balancer with a public/private keypair.
+
+New-LBConnection -Appliance "192.168.1.100" -Username "root" -Password "loadbalancer" -key "C:\Users\User\id_rsa"
 #>
 function New-LBConnection
 {
@@ -49,12 +60,23 @@ function New-LBConnection
 		[Parameter(Mandatory=$true)]
 		[string]$username,
 
-		[string]$password
+		[string]$password,
+
+		[string]$key
 	)
 
-	if ($password -eq $null)
+	if ([string]::IsNullOrEmpty($password))
 	{
-		$serverCredential = Get-Credential -Username $username
+		if ($key -eq $null)
+		{
+			$message = "Enter ${username}'s ssh password"
+		}
+		else
+		{
+			$message = "Enter ${username}'s private key password"
+		}
+
+		$serverCredential = Get-Credential -Username $username -message $message
 	}
 	else
 	{
@@ -62,7 +84,14 @@ function New-LBConnection
 		$serverCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $username,$securePassword
 	}
 
-	return New-SSHSession -ComputerName $appliance -Credential $serverCredential -AcceptKey
+	if ($key -eq $null)
+	{
+		return New-SSHSession -ComputerName $appliance -Credential $serverCredential -AcceptKey
+	}
+	else
+	{
+		return New-SSHSession -ComputerName $appliance -Credential $serverCredential -AcceptKey -key $key
+	}
 }
 
 <#
