@@ -190,4 +190,32 @@ function Invoke-LBRipOnline
 	return Invoke-SSHCommand -SSHSession $connection -Command $("lbcli --action online --vip " + $vip + " --rip " + $rip)
 }
 
+function Get-LBVip
+{
+	param (
+		[Parameter(Mandatory=$true)]
+		[object]$connection,
+
+		[string]$label
+	)
+
+	$LBconfig = Invoke-SSHCommand -SSHSession $connection -Command $("cat /etc/loadbalancer.org/lb_config.xml")
+
+	[xml] $xml = $LBconfig.Output
+
+	if ([string]::IsNullOrEmpty($label))
+	{
+		return $xml.config.haproxy.virtual
+	}
+	else
+	{
+		$xml.config.haproxy.virtual | foreach {
+			if ($_.label -eq $label)
+			{
+				return $_
+			}
+		}
+	}
+}
+
 Export-ModuleMember -function *
