@@ -76,7 +76,7 @@ function New-LBConnection
 			$message = "Enter ${username}'s private key password"
 		}
 
-		$serverCredential = Get-Credential -Username $username -message $message
+		$serverCredential = Get-Credential -Username $username -Message $message
 	}
 	else
 	{
@@ -90,7 +90,7 @@ function New-LBConnection
 	}
 	else
 	{
-		return New-SSHSession -ComputerName $appliance -Credential $serverCredential -AcceptKey -key $key
+		return New-SSHSession -ComputerName $appliance -Credential $serverCredential -AcceptKey -Key $key
 	}
 }
 
