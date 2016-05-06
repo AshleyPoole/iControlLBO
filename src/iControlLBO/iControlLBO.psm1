@@ -190,7 +190,27 @@ function Invoke-LBRipOnline
 	return Invoke-SSHCommand -SSHSession $connection -Command $("lbcli --action online --vip " + $vip + " --rip " + $rip)
 }
 
-function Get-LBVip
+<#
+.DESCRIPTION
+Gets settings for VIP(s).
+
+.PARAMETER connection
+Specifies the load balancer connection to be used when running the command.
+
+.PARAMETER label
+Specifies the VIP name to filter by.
+
+.EXAMPLE
+Get a list of all VIPs on the appliance with settings.
+
+Get-LBVirtualServer -Connection $connection
+
+.EXAMPLE
+Get a specific VIP and its settings from the appliance.
+
+Get-LBVirtualServer -Connection $connection -Label "PROD-EXTERNAL-WEBSITES"
+#>
+function Get-LBVirtualServer
 {
 	param (
 		[Parameter(Mandatory=$true)]
@@ -207,15 +227,8 @@ function Get-LBVip
 	{
 		return $xml.config.haproxy.virtual
 	}
-	else
-	{
-		$xml.config.haproxy.virtual | foreach {
-			if ($_.label -eq $label)
-			{
-				return $_
-			}
-		}
-	}
+
+        return $xml.config.haproxy.virtual | Where { $_.label -eq $label }
 }
 
 Export-ModuleMember -function *
