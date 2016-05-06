@@ -216,4 +216,45 @@ function Invoke-LBCustomCommand
 	return Invoke-SSHCommand -SSHSession $connection -Command $command
 }
 
+<#
+.DESCRIPTION
+Gets settings for VIP(s).
+
+.PARAMETER connection
+Specifies the load balancer connection to be used when running the command.
+
+.PARAMETER label
+Specifies the VIP name to filter by.
+
+.EXAMPLE
+Get a list of all VIPs on the appliance with settings.
+
+Get-LBVirtualServer -Connection $connection
+
+.EXAMPLE
+Get a specific VIP and its settings from the appliance.
+
+Get-LBVirtualServer -Connection $connection -Label "PROD-EXTERNAL-WEBSITES"
+#>
+function Get-LBVirtualServer
+{
+	param (
+		[Parameter(Mandatory=$true)]
+		[object]$connection,
+
+		[string]$label
+	)
+
+	$LBconfig = Invoke-SSHCommand -SSHSession $connection -Command $("cat /etc/loadbalancer.org/lb_config.xml")
+
+	[xml] $xml = $LBconfig.Output
+
+	if ([string]::IsNullOrEmpty($label))
+	{
+		return $xml.config.haproxy.virtual
+	}
+
+        return $xml.config.haproxy.virtual | Where { $_.label -eq $label }
+}
+
 Export-ModuleMember -function *
