@@ -123,7 +123,7 @@ function Invoke-LBRipHalt
 		[string]$rip
 	)
 
-	return Invoke-SSHCommand -SSHSession $connection -Command $("lbcli --action halt --vip " + $vip + " --rip " + $rip)
+	return Invoke-SSHCommand -SSHSession $connection -Command $("sudo lbcli --action halt --vip " + $vip + " --rip " + $rip)
 }
 
 <#
@@ -155,7 +155,7 @@ function Invoke-LBRipDrain
 		[string]$rip
 	)
 
-	return Invoke-SSHCommand -SSHSession $connection -Command $("lbcli --action drain --vip " + $vip + " --rip " + $rip)
+	return Invoke-SSHCommand -SSHSession $connection -Command $("sudo lbcli --action drain --vip " + $vip + " --rip " + $rip)
 }
 
 <#
@@ -187,7 +187,7 @@ function Invoke-LBRipOnline
 		[string]$rip
 	)
 
-	return Invoke-SSHCommand -SSHSession $connection -Command $("lbcli --action online --vip " + $vip + " --rip " + $rip)
+	return Invoke-SSHCommand -SSHSession $connection -Command $("sudo lbcli --action online --vip " + $vip + " --rip " + $rip)
 }
 
 <#
