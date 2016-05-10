@@ -216,4 +216,25 @@ function Invoke-LBCustomCommand
 	return Invoke-SSHCommand -SSHSession $connection -Command $command
 }
 
+<#
+.DESCRIPTION
+Closes the ssh connection to the load balancer.
+
+.PARAMETER connection
+Specifies the load balancer connection to be closed.
+
+.EXAMPLE
+Remove-LBSession -Connection $connection
+#>
+
+function Remove-LBSession
+{
+	param (
+		[Parameter(Mandatory=$true)]
+		[object]$connection
+	)
+
+	return Remove-SSHSession -SessionId $connection.SessionId
+}
+
 Export-ModuleMember -function *
