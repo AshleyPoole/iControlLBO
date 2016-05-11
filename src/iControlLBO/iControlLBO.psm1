@@ -107,6 +107,9 @@ Specifies the VIP name that the RIP belongs too.
 .PARAMETER rip
 Specifies the RIP name.
 
+.PARAMETER sudo
+Use sudo to complete the action.
+
 .EXAMPLE
 Invoke-LBRipHalt -Connection $connection -Vip "PROD-EXTERNAL-WEBSITES" -Rip "PROD-RIP-1"
 #>
@@ -120,10 +123,22 @@ function Invoke-LBRipHalt
 		[string]$vip,
 
 		[Parameter(Mandatory=$true)]
-		[string]$rip
+		[string]$rip,
+
+		[switch]$sudo
 	)
 
-	return Invoke-SSHCommand -SSHSession $connection -Command $("sudo lbcli --action halt --vip " + $vip + " --rip " + $rip)
+	$cmd = ""
+	if ($sudo)
+	{
+		$cmd = $("lbcli --action halt --vip " + $vip + " --rip " + $rip)
+	}
+	else
+	{
+		$cmd = $("sudo lbcli --action halt --vip " + $vip + " --rip " + $rip)
+	}
+
+	return Invoke-SSHCommand -SSHSession $connection -Command $cmd
 }
 
 <#
@@ -139,6 +154,9 @@ Specifies the VIP name that the RIP belongs too.
 .PARAMETER rip
 Specifies the RIP name.
 
+.PARAMETER sudo
+Use sudo to complete the action.
+
 .EXAMPLE
 Invoke-LBRipDrain -Connection $connection -Vip "PROD-EXTERNAL-WEBSITES" -Rip "PROD-RIP-1"
 #>
@@ -152,10 +170,22 @@ function Invoke-LBRipDrain
 		[string]$vip,
 
 		[Parameter(Mandatory=$true)]
-		[string]$rip
+		[string]$rip,
+
+		[switch]$sudo
 	)
 
-	return Invoke-SSHCommand -SSHSession $connection -Command $("sudo lbcli --action drain --vip " + $vip + " --rip " + $rip)
+	$cmd = ""
+	if ($sudo)
+	{
+		$cmd = $("lbcli --action drain --vip " + $vip + " --rip " + $rip)
+	}
+	else
+	{
+		$cmd = $("sudo lbcli --action drain --vip " + $vip + " --rip " + $rip)
+	}
+
+	return Invoke-SSHCommand -SSHSession $connection -Command $cmd
 }
 
 <#
@@ -171,6 +201,9 @@ Specifies the VIP name that the RIP belongs too.
 .PARAMETER rip
 Specifies the RIP name.
 
+.PARAMETER sudo
+Use sudo to complete the action.
+
 .EXAMPLE
 Invoke-LBRipOnline -Connection $connection -Vip "PROD-EXTERNAL-WEBSITES" -Rip "PROD-RIP-1"
 #>
@@ -184,10 +217,22 @@ function Invoke-LBRipOnline
 		[string]$vip,
 
 		[Parameter(Mandatory=$true)]
-		[string]$rip
+		[string]$rip,
+
+		[switch]$sudo
 	)
 
-	return Invoke-SSHCommand -SSHSession $connection -Command $("sudo lbcli --action online --vip " + $vip + " --rip " + $rip)
+	$cmd = ""
+	if ($sudo)
+	{
+		$cmd = $("lbcli --action online --vip " + $vip + " --rip " + $rip)
+	}
+	else
+	{
+		$cmd = $("sudo lbcli --action online --vip " + $vip + " --rip " + $rip)
+	}
+
+	return Invoke-SSHCommand -SSHSession $connection -Command $cmd
 }
 
 <#
