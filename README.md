@@ -21,6 +21,7 @@ This shows for example:
 CommandType     Name                                               ModuleName
 -----------     ----                                               ----------
 Function        Install-Dependencies                               iControlLBO
+Function        Invoke-LBCustomCommand                             iControlLBO
 Function        Invoke-LBRipDrain                                  iControlLBO
 Function        Invoke-LBRipHalt                                   iControlLBO
 Function        Invoke-LBRipOnline                                 iControlLBO
@@ -97,6 +98,16 @@ Output     : {, , CLI: halt web1 web1 completed}
 ExitStatus : 0
 ```
 
+#### Stop the SSH connection
+
+This assumes you've created a session already as shown in the previous
+examples. No output is expected, check the return code if you want to verify
+that the function succeeded.
+
+```powershell
+Remove-LBSession -connection $ssh_con
+```
+
 ### Other
 
 #### Custom Commands
@@ -109,4 +120,3 @@ Host       : hostname
 Output     : {/dev/sda1       2.6G  1.1G  1.3G  46% /}
 ExitStatus : 0
 ```
-
