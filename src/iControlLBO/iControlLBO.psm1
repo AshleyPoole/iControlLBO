@@ -256,7 +256,7 @@ function Invoke-LBCustomCommand
 
 	if ($sudo)
 	{
-		$$command = "sudo " + $command
+		$command = "sudo " + $command
 	}
 
 	return Invoke-SSHCommand -SSHSession $connection -Command $command
