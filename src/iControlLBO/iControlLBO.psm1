@@ -4,9 +4,9 @@
 Installs Posh-SSH as this is a dependency.
 
 .EXAMPLE
-Install-Dependencies
+Install-LBDependencies
 #>
-function Install-Dependencies
+function Install-LBDependencies
 {
 	if (!(Get-Module -ListAvailable -Name Posh-SSH))
 	{

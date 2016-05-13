@@ -20,7 +20,7 @@ This shows for example:
 ```powershell
 CommandType     Name                                               ModuleName
 -----------     ----                                               ----------
-Function        Install-Dependencies                               iControlLBO
+Function        Install-LBDependencies                               iControlLBO
 Function        Invoke-LBCustomCommand                             iControlLBO
 Function        Invoke-LBRipDrain                                  iControlLBO
 Function        Invoke-LBRipHalt                                   iControlLBO
@@ -33,8 +33,8 @@ Function        New-LBConnection                                   iControlLBO
 Install-Dependencies
 ```
 
-If for some reason there's a naming conflict with the `Install-Dependencies`
-function and another module, run `iControlLBO\Install-Dependencies` instead.
+If for some reason there's a naming conflict with the `Install-LBDependencies`
+function and another module, run `iControlLBO\Install-LBDependencies` instead.
 
 ### Establish connection to LB
 Create the connection and save it to a variable:
