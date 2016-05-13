@@ -66,6 +66,9 @@ Enter password at prompt, or as a command line argument with `-password $passwor
 ### Start/halt/drain a RIP
 
 #### Start RIP
+
+There is a `-sudo` flag if you need it.
+
 ```powershell
 Invoke-LBRipOnline -connection $ssh_con -vip web -rip web1
 ```
@@ -77,6 +80,9 @@ ExitStatus : 0
 ```
 
 #### Drain RIP
+
+There is a `-sudo` flag if you need it.
+
 ```powershell
 Invoke-LBRipDrain -connection $ssh_con -vip web -rip web1
 ```
@@ -88,6 +94,9 @@ ExitStatus : 0
 ```
 
 #### Halt RIP
+
+There is a `-sudo` flag if you need it.
+
 ```powershell
 Invoke-LBRipHalt -connection $ssh_con -vip web -rip web1
 ```
