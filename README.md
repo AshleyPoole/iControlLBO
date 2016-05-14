@@ -21,11 +21,12 @@ This shows for example:
 CommandType     Name                                               ModuleName
 -----------     ----                                               ----------
 Function        Install-LBDependencies                             iControlLBO
-Function        Invoke-LBCustomCommand                             iControlLBO
+Function        New-LBConnection                                   iControlLBO
 Function        Invoke-LBRipDrain                                  iControlLBO
 Function        Invoke-LBRipHalt                                   iControlLBO
 Function        Invoke-LBRipOnline                                 iControlLBO
-Function        New-LBConnection                                   iControlLBO
+Function        Invoke-LBCustomCommand                             iControlLBO
+Function        Remove-LBConnection                                iControlLBO
 ```
 
 ### Install pre-requisites
