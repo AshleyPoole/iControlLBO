@@ -20,7 +20,7 @@ This shows for example:
 ```powershell
 CommandType     Name                                               ModuleName
 -----------     ----                                               ----------
-Function        Install-LBDependencies                               iControlLBO
+Function        Install-LBDependencies                             iControlLBO
 Function        Invoke-LBCustomCommand                             iControlLBO
 Function        Invoke-LBRipDrain                                  iControlLBO
 Function        Invoke-LBRipHalt                                   iControlLBO
