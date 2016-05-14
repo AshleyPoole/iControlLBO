@@ -4,9 +4,9 @@
 Installs Posh-SSH as this is a dependency.
 
 .EXAMPLE
-Install-Dependencies
+Install-LBDependencies
 #>
-function Install-Dependencies
+function Install-LBDependencies
 {
 	if (!(Get-Module -ListAvailable -Name Posh-SSH))
 	{
@@ -128,14 +128,11 @@ function Invoke-LBRipHalt
 		[switch]$sudo
 	)
 
-	$cmd = ""
+	$cmd = $("lbcli --action halt --vip " + $vip + " --rip " + $rip)
+
 	if ($sudo)
 	{
-		$cmd = $("lbcli --action halt --vip " + $vip + " --rip " + $rip)
-	}
-	else
-	{
-		$cmd = $("sudo lbcli --action halt --vip " + $vip + " --rip " + $rip)
+		$cmd = "sudo " + $cmd
 	}
 
 	return Invoke-SSHCommand -SSHSession $connection -Command $cmd
@@ -175,14 +172,11 @@ function Invoke-LBRipDrain
 		[switch]$sudo
 	)
 
-	$cmd = ""
+	$cmd = $("lbcli --action drain --vip " + $vip + " --rip " + $rip)
+
 	if ($sudo)
 	{
-		$cmd = $("lbcli --action drain --vip " + $vip + " --rip " + $rip)
-	}
-	else
-	{
-		$cmd = $("sudo lbcli --action drain --vip " + $vip + " --rip " + $rip)
+		$cmd = "sudo " + $cmd
 	}
 
 	return Invoke-SSHCommand -SSHSession $connection -Command $cmd
@@ -222,14 +216,11 @@ function Invoke-LBRipOnline
 		[switch]$sudo
 	)
 
-	$cmd = ""
+	$cmd = $("lbcli --action online --vip " + $vip + " --rip " + $rip)
+
 	if ($sudo)
 	{
-		$cmd = $("lbcli --action online --vip " + $vip + " --rip " + $rip)
-	}
-	else
-	{
-		$cmd = $("sudo lbcli --action online --vip " + $vip + " --rip " + $rip)
+		$cmd = "sudo " + $cmd
 	}
 
 	return Invoke-SSHCommand -SSHSession $connection -Command $cmd
@@ -245,6 +236,9 @@ Specifies the load balancer connection to be used when running the command.
 .PARAMETER command
 Specifies the command to execute.
 
+.PARAMETER sudo
+Use sudo to complete the action.
+
 .EXAMPLE
 Invoke-LBCustomCommand -Connection $connection -Command "df -h | grep /dev/sda1"
 #>
@@ -255,8 +249,15 @@ function Invoke-LBCustomCommand
 		[object]$connection,
 
 		[Parameter(Mandatory=$true)]
-		[string]$command
+		[string]$command,
+
+		[switch]$sudo
 	)
+
+	if ($sudo)
+	{
+		$command = "sudo " + $command
+	}
 
 	return Invoke-SSHCommand -SSHSession $connection -Command $command
 }

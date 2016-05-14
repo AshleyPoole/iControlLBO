@@ -20,7 +20,7 @@ This shows for example:
 ```powershell
 CommandType     Name                                               ModuleName
 -----------     ----                                               ----------
-Function        Install-Dependencies                               iControlLBO
+Function        Install-LBDependencies                               iControlLBO
 Function        Invoke-LBCustomCommand                             iControlLBO
 Function        Invoke-LBRipDrain                                  iControlLBO
 Function        Invoke-LBRipHalt                                   iControlLBO
@@ -33,10 +33,10 @@ Function        New-LBConnection                                   iControlLBO
 Install-Dependencies
 ```
 
-If for some reason there's a naming conflict with the `Install-Dependencies`
-function and another module, run `iControlLBO\Install-Dependencies` instead.
+If for some reason there's a naming conflict with the `Install-LBDependencies`
+function and another module, run `iControlLBO\Install-LBDependencies` instead.
 
-### Establish connection to LB
+### Create connection to LB
 Create the connection and save it to a variable:
 ```powershell
 $ssh_con = New-LBConnection
@@ -107,7 +107,7 @@ Output     : {, , CLI: halt web1 web1 completed}
 ExitStatus : 0
 ```
 
-#### Stop the SSH connection
+#### Remove the SSH connection
 
 This assumes you've created a session already as shown in the previous
 examples. No output is expected, check the return code if you want to verify
@@ -120,6 +120,9 @@ Remove-LBSession -connection $ssh_con
 ### Other
 
 #### Custom Commands
+
+There is a `-sudo` flag if you need it.
+
 ```powershell
 Invoke-LBCustomCommand -connection $ssh_con -command "df -h | grep /dev/sda1"
 ```
