@@ -31,7 +31,7 @@ Function        Remove-LBConnection                                iControlLBO
 
 ### Install pre-requisites
 ```powershell
-Install-Dependencies
+Install-LBDependencies
 ```
 
 If for some reason there's a naming conflict with the `Install-LBDependencies`
